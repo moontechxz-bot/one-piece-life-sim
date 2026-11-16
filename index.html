@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece Life Simulator - ชะตาชีวิตในโลกวันพีซ (Pixel Edition)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <header class="site-header">
+        <h1 class="header-title">ONE PIECE LIFE SIMULATOR</h1>
+        <p class="header-subtitle">มหากาพย์การจำลองชีวิตปีต่อปีในโลกวันพีซ พร้อมระบบผลปีศาจและการต่อสู้ Pixel Art</p>
+        <button id="soundToggleBtn" class="sound-toggle-btn">🔊 เสียง: เปิด</button>
+    </header>
+
+    <!-- Mobile Connect Box -->
+    <div id="phoneConnectBox" style="background: rgba(20, 10, 5, 0.9); border: 2px solid #ffd700; border-radius: 8px; padding: 10px 16px; margin: 0 auto 16px auto; max-width: 700px; text-align: center; color: #fff; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.6);">
+        📱 <strong>เล่นในโทรศัพท์มือถือ:</strong> เชื่อมต่อ Wi-Fi เดียวกัน แล้วเปิด Safari / Chrome พิมพ์: 
+        <div style="margin-top: 4px;"><a href="http://192.168.1.165:3000" style="color: #ffd700; font-weight: 800; font-size: 1.15rem; text-decoration: underline;">http://192.168.1.165:3000</a></div>
+    </div>
+
+
+    <main class="main-wrapper">
+
+        <!-- SECTION 1: PRE-BIRTH ROULETTE -->
+        <section id="rouletteSection" class="parchment-card roulette-section">
+            <h2 class="roulette-banner">🎰 หมุนวงล้อสุ่มชะตาก่อนเกิด (Pre-Birth Roulette)</h2>
+            <p class="roulette-desc">
+                ก่อนที่เจ้าจะได้ลืมตาดูโลก จงเสี่ยงดวงหมุนวงล้อกำหนดพรหมลิขิตทั้ง 4 ด้าน: ทะเลเกิด, เผ่าพันธุ์/สายเลือด D., ฐานะครอบครัว และพรสวรรค์ฮาคิ!
+            </p>
+
+            <div class="name-input-group">
+                <label for="charNameInput">📜 นามของเจ้า:</label>
+                <input type="text" id="charNameInput" value="มังกี้ ดี ไคลด์" placeholder="กรอกชื่อตัวละคร...">
+            </div>
+
+            <!-- 4 Roulette Slots Grid -->
+            <div class="slots-grid">
+                <!-- Slot 1: Sea -->
+                <div class="slot-box" id="slotBox_sea">
+                    <div class="slot-header">🌊 ทะเลเกิด</div>
+                    <div class="slot-display">
+                        <div class="slot-val-title" id="slotVal_sea">กดสุ่ม</div>
+                        <div class="slot-val-sub" id="slotSub_sea">-</div>
+                    </div>
+                    <button class="slot-spin-btn" id="spinSeaBtn">🎲 สุ่มช่องนี้</button>
+                </div>
+
+                <!-- Slot 2: Race & Lineage -->
+                <div class="slot-box" id="slotBox_race">
+                    <div class="slot-header">🧬 เผ่าพันธุ์ / สายเลือด D.</div>
+                    <div class="slot-display">
+                        <div class="slot-val-title" id="slotVal_race">กดสุ่ม</div>
+                        <div class="slot-val-sub" id="slotSub_race">-</div>
+                    </div>
+                    <button class="slot-spin-btn" id="spinRaceBtn">🎲 สุ่มช่องนี้</button>
+                </div>
+
+                <!-- Slot 3: Family -->
+                <div class="slot-box" id="slotBox_family">
+                    <div class="slot-header">👑 ฐานะครอบครัว</div>
+                    <div class="slot-display">
+                        <div class="slot-val-title" id="slotVal_family">กดสุ่ม</div>
+                        <div class="slot-val-sub" id="slotSub_family">-</div>
+                    </div>
+                    <button class="slot-spin-btn" id="spinFamilyBtn">🎲 สุ่มช่องนี้</button>
+                </div>
+
+                <!-- Slot 4: Haki Talent -->
+                <div class="slot-box" id="slotBox_talent">
+                    <div class="slot-header">⚡ พรสวรรค์ฮาคิ</div>
+                    <div class="slot-display">
+                        <div class="slot-val-title" id="slotVal_talent">กดสุ่ม</div>
+                        <div class="slot-val-sub" id="slotSub_talent">-</div>
+                    </div>
+                    <button class="slot-spin-btn" id="spinTalentBtn">🎲 สุ่มช่องนี้</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="roulette-actions">
+                <button class="btn-gold-big" id="spinAllBtn">🌀 สุ่มรวดเดียวทั้ง 4 ช่อง</button>
+                <button class="btn-red-big" id="startGameBtn" disabled>⚓ เริ่มต้นชีวิตในโลกวันพีซ</button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MAIN GAMEPLAY DASHBOARD -->
+        <section id="gameDashboard" class="game-layout hidden">
+            
+            <!-- Wanted Poster & Stats Sidebar -->
+            <aside class="wanted-card">
+                <div class="wanted-title">WANTED</div>
+                <div class="wanted-photo-frame">
+                    <div class="wanted-avatar" id="wantedAvatar">👦</div>
+                    <div class="wanted-role-badge" id="wantedRole">ชาวบ้าน (Civilian)</div>
+                </div>
+                <div class="wanted-name" id="wantedName">มังกี้ ดี ไคลด์</div>
+                
+                <!-- Devil Fruit Badge Display -->
+                <div id="devilFruitBadge" class="devil-fruit-badge hidden">
+                    <span>🍇</span> <strong>ผลปีศาจ</strong>
+                </div>
+
+                <div class="wanted-status-line">DEAD OR ALIVE</div>
+
+                <div class="wanted-bounty-box">
+                    <div class="wanted-bounty-label">BOUNTY / ค่าหัวนำจับ</div>
+                    <div class="wanted-bounty-val" id="wantedBounty">฿ 0</div>
+                </div>
+
+                <!-- Attributes & Meters with Full Thai Names -->
+                <div class="stats-list">
+                    <!-- Health -->
+                    <div class="stat-item">
+                        <div class="stat-top">
+                            <span>❤️ พลังชีวิตและอายุขัย</span>
+                            <span id="statHealthVal">100 / 100</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill fill-health" id="statHealthFill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Joy -->
+                    <div class="stat-item">
+                        <div class="stat-top">
+                            <span>😄 ความสุขและอิสรภาพ</span>
+                            <span id="statJoyVal">50%</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill fill-joy" id="statJoyFill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill -->
+                    <div class="stat-item">
+                        <div class="stat-top">
+                            <span>⚔️ ฝีมือการต่อสู้และฮาคิ</span>
+                            <span id="statSkillVal">25</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill fill-skill" id="statSkillFill" style="width: 10%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Connections -->
+                    <div class="stat-item">
+                        <div class="stat-top">
+                            <span>🤝 เส้นสายและพรรคพวก</span>
+                            <span id="statConnVal">15</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill fill-conn" id="statConnFill" style="width: 15%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Money -->
+                    <div class="stat-currency">
+                        <span>💰 เงินเบรีในกระเป๋า:</span>
+                        <span id="statBeliVal">฿ 5,000</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Interactive Play Area -->
+            <div class="play-area">
+                <!-- Timeline & Decision Card -->
+                <div class="parchment-card">
+                    <div class="event-header">
+                        <span class="age-badge" id="currentAgeBadge">อายุ 0 ปี</span>
+                        <span class="arc-name">🌊 ไทม์ไลน์อนิเมะวันพีซ</span>
+                    </div>
+
+                    <h2 class="event-title" id="eventTitle">กำเนิดทารกใต้ฟากฟ้าอันกว้างใหญ่</h2>
+                    <p class="event-lore" id="eventLore">
+                        เสียงคลื่นทะเลคำรามต้อนรับทารกน้อยเข้าสู่ยุคสมัยแห่งโจรสลัดอันรุ่งโรจน์...
+                    </p>
+
+                    <div class="event-question" id="eventQuestion">เจ้าจะตัดสินใจอย่างไร?</div>
+
+                    <!-- Dynamic Choices -->
+                    <div class="options-list" id="eventOptionsContainer">
+                        <!-- Populated by game.js -->
+                    </div>
+                </div>
+
+                <!-- Logbook / Chronicles -->
+                <div class="logbook-card">
+                    <div class="logbook-header">
+                        <span>📖 บันทึกการเดินทางแห่งชีวิต (Logbook Chronicles)</span>
+                    </div>
+                    <div id="logbookList">
+                        <!-- Log entries will be prepended here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SECTION 3: BOSS BATTLE ARENA MODAL (With Pixel Art Canvas) -->
+    <div id="battleModalOverlay" class="battle-modal-overlay hidden">
+        <div class="battle-arena-card">
+            <div class="battle-header">
+                <h2 class="battle-title" id="battleTitle">⚔️ BOSS BATTLE: อารอง</h2>
+                <div class="battle-sub" id="battleSub">กัปตันกลุ่มโจรสลัดอารอง มนุษย์เงือกฉลามฟันเลื่อย</div>
+            </div>
+
+            <!-- Pixel Art Battle Canvas Arena -->
+            <div class="pixel-canvas-container">
+                <canvas id="pixelBattleCanvas" width="760" height="280"></canvas>
+            </div>
+
+            <!-- Fighters HP Bars -->
+            <div class="fighters-grid">
+                <!-- Player HP -->
+                <div class="fighter-card">
+                    <div class="fighter-name" id="battlePlayerName">มังกี้ ดี ไคลด์</div>
+                    <div class="fighter-hp-bar">
+                        <div class="fighter-hp-fill" id="battlePlayerHpFill" style="width: 100%;"></div>
+                    </div>
+                    <div class="fighter-hp-text" id="battlePlayerHpText">400 / 400 พลังชีวิต</div>
+                </div>
+
+                <div class="vs-sign">VS</div>
+
+                <!-- Boss HP -->
+                <div class="fighter-card">
+                    <div class="fighter-name" id="battleBossName">อารอง (Arlong)</div>
+                    <div class="fighter-hp-bar">
+                        <div class="fighter-hp-fill" id="battleBossHpFill" style="width: 100%;"></div>
+                    </div>
+                    <div class="fighter-hp-text" id="battleBossHpText">350 / 350 พลังชีวิต</div>
+                </div>
+            </div>
+
+            <!-- Battle Combat Logs -->
+            <div class="battle-log-box" id="battleLogBox">
+                <!-- Dynamic combat logs -->
+            </div>
+
+            <!-- Turn Actions -->
+            <div class="battle-action-grid">
+                <button class="battle-btn" id="battleAtkBtn">
+                    <span>🗡️ ท่าโจมตีหลัก</span>
+                    <span class="battle-btn-sub">คิดตามฝีมือการต่อสู้</span>
+                </button>
+                <button class="battle-btn" id="battleSpecialBtn">
+                    <span>💥 ท่าไม้ตาย / ผลปีศาจ</span>
+                    <span class="battle-btn-sub">พลังทำลายล้างสูง x2</span>
+                </button>
+                <button class="battle-btn" id="battleHakiBtn">
+                    <span>🛡️ เคลือบฮาคิเกราะ</span>
+                    <span class="battle-btn-sub">ลดดาเมจบอส 50%</span>
+                </button>
+                <button class="battle-btn" id="battleAllyBtn">
+                    <span>🤝 พันธมิตรอนิเมะช่วยรบ</span>
+                    <span class="battle-btn-sub">ผสานพลังพรรคพวก</span>
+                </button>
+                <button class="battle-btn" id="battleHealBtn">
+                    <span>🍖 กินเนื้อฟื้นพลัง</span>
+                    <span class="battle-btn-sub">ฟื้นฟูเลือด +35%</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: ENDGAME, FUNERAL & 3 REBIRTH MODAL -->
+    <div id="endgameModalOverlay" class="endgame-modal-overlay hidden">
+        <div class="endgame-card">
+            <h2 class="endgame-title" id="endgameTitle">วาระสุดท้ายแห่งตำนาน</h2>
+            
+            <p class="endgame-epitaph" id="endgameEpitaph">
+                “ผู้คนต่างกล่าวขานว่า... ชายผู้นี้ได้ใช้ชีวิตอย่างไม่เสียดายแม้แต่วินาทีเดียว เจตจำนงของเขาจะสว่างไสวในประวัติศาสตร์ตลอดกาล!”
+            </p>
+
+            <!-- Final Summary Stats with Full Thai Names -->
+            <div class="summary-stats-box">
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">ฉายาในตำนาน</span>
+                    <span class="summary-stat-val" id="endgameTitleVal">ราชาโจรสลัด</span>
+                </div>
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">อายุขัยรวม</span>
+                    <span class="summary-stat-val" id="endgameAgeVal">78 ปี</span>
+                </div>
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">ค่าหัวสูงสุด</span>
+                    <span class="summary-stat-val" id="endgameBountyVal">฿ 3,000,000,000</span>
+                </div>
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">มรดกเงินเบรีคงเหลือ</span>
+                    <span class="summary-stat-val" id="endgameBeliVal">฿ 50,000,000</span>
+                </div>
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">แต้มบุญและเจตจำนง</span>
+                    <span class="summary-stat-val" id="endgameKarmaVal">180 แต้มบุญ</span>
+                </div>
+                <div class="summary-stat-cell">
+                    <span class="summary-stat-label">เปอร์เซ็นไทล์ชีวิต</span>
+                    <span class="summary-stat-val" id="endgamePercentileVal">Top 0.5%</span>
+                </div>
+            </div>
+
+            <!-- Funeral Ceremony Choice -->
+            <div class="funeral-select-box">
+                <label for="funeralSelect">⚰️ เลือกวิธีจัดงานศพและคำสั่งเสียสุดท้าย:</label>
+                <select id="funeralSelect">
+                    <option value="viking">⛵ งานศพลอยทะเลเผาเรือแบบไวกิ้ง (พรรคพวกจุดไฟส่งวิญญาณสู่อิสรภาพ)</option>
+                    <option value="banquet">🍻 งานเลี้ยงฉลองโจรสลัดครั้งสุดท้าย (ทุกคนดื่มเหล้าสาเกและร้องเพลงส่งท้าย)</option>
+                    <option value="state">⚓ งานศพเกียรติยศแห่งกองทัพเรือ (ยิงปืนสลุต 21 นัดเคารพวีรชน)</option>
+                    <option value="quiet">🌳 ฝังเงียบสงบใต้ต้นไม้ใหญ่ ณ หมู่บ้านเกิด</option>
+                </select>
+            </div>
+
+            <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: #3b2514;">
+                🔮 เลือกรูปแบบการเล่นรอบต่อไป (3 ทางเลือกการเกิดใหม่):
+            </h3>
+
+            <!-- 3 Rebirth Options -->
+            <div class="rebirth-grid">
+                <!-- Option 1: Heir -->
+                <div class="rebirth-card" id="rebirthCardHeir">
+                    <div>
+                        <div class="rebirth-title">1. 👶 สืบทอดรุ่นลูก</div>
+                        <div class="rebirth-desc">
+                            เล่นต่อเป็นลูกแท้ๆ ของตนเอง รับมรดกเงินเบรี 70% และสืบทอดสายเลือดเดิม (ต้องแต่งงานและมีลูกตอนอายุ 32 ปี)
+                        </div>
+                    </div>
+                    <button class="rebirth-btn rebirth-btn-heir" id="rebirthHeirBtn">สืบทอดรุ่นลูก</button>
+                </div>
+
+                <!-- Option 2: Karma Bonus -->
+                <div class="rebirth-card" id="rebirthCardKarma">
+                    <div>
+                        <div class="rebirth-title">2. 🌟 เกิดใหม่พร้อมโบนัสแต้มบุญ</div>
+                        <div class="rebirth-desc">
+                            ใช้แต้มบุญสะสม ช่วยเพิ่มโอกาสสุ่มได้ตระกูล D, ฮาคิราชันย์ หรือครอบครัวมหาเศรษฐีอย่างสูงลิ่ว!
+                        </div>
+                    </div>
+                    <button class="rebirth-btn rebirth-btn-karma" id="rebirthKarmaBtn">เกิดใหม่ด้วยแต้มบุญ</button>
+                </div>
+
+                <!-- Option 3: Pure Roulette -->
+                <div class="rebirth-card" id="rebirthCardPure">
+                    <div>
+                        <div class="rebirth-title">3. 🔄 หมุนวงล้อเกิดใหม่ 100%</div>
+                        <div class="rebirth-desc">
+                            ล้างชะตาทั้งหมด เริ่มสุ่มดวงใหม่ตั้งแต่ศูนย์ วัดดวงบริสุทธิ์เพื่อสัมผัสเส้นทางชีวิตที่ต่างออกไปโดยสิ้นเชิง
+                        </div>
+                    </div>
+                    <button class="rebirth-btn rebirth-btn-pure" id="rebirthPureBtn">หมุนวงล้อใหม่ 100%</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="devil-fruits-data.js"></script>
+    <script src="boss-data.js"></script>
+    <script src="events-data.js"></script>
+    <script src="pixel-art-engine.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
